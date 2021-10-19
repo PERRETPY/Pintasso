@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Pintasso</string>
+    <string name="picasso_version">Picasso version</string>
+    <string name="classic_version">Classic version</string>
 </resources>

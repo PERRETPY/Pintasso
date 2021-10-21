@@ -10,7 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pintasso.R;
-import com.example.pintasso.model.ImageUrl;
+import com.example.pintasso.model.ImageItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -21,17 +22,18 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder>{
 
     private Activity context;
     private LayoutInflater inflater;
+    private List<ImageItem> itemList;
 
-    public void setUrlList(List<ImageUrl> urlList) {
-        this.urlList = urlList;
+
+    public void setUrlList(List<ImageItem> itemList) {
+        this.itemList = itemList;
     }
 
-    private List<ImageUrl> urlList;
 
-    public ImageAdapter(Activity context, List<ImageUrl> urlList) {
+    public ImageAdapter(Activity context, List<ImageItem> itemList) {
         this.inflater = LayoutInflater.from(context);
         this.context = context;
-        this.urlList = urlList;
+        this.itemList = itemList;
     }
 
     @NonNull
@@ -44,18 +46,18 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //TODO
+        Picasso.get().load(itemList.get(position).urls.thumb).into(holder.pImageView);
     }
 
     @Override
     public int getItemCount() {
-        return urlList.size();
+        return itemList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.img_item)
-        private ImageView pImageView;
+        ImageView pImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);

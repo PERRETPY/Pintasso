@@ -1,5 +1,7 @@
 package com.example.pintasso;
 
+import com.example.pintasso.event.EventBusManager;
+import com.example.pintasso.event.SearchResultEvent;
 import com.example.pintasso.model.UnsplashResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,12 +10,15 @@ import java.lang.reflect.Modifier;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public class ImageSearchService {
+
+    public static ImageSearchService INSTANCE = new ImageSearchService();
 
     private ImageSearchRESTService pImageSearchRESTService;
 
@@ -36,6 +41,30 @@ public class ImageSearchService {
 
         // Use retrofit to generate our REST service code
         this.pImageSearchRESTService = retrofit.create(ImageSearchRESTService.class);
+    }
+
+    public void searchImageFromQuery(final String search) {
+        // Call to the REST service
+        pImageSearchRESTService.searchForImages(search).enqueue(new Callback<UnsplashResult>() {
+            @Override
+            public void onResponse(Call<UnsplashResult> call, retrofit2.Response<UnsplashResult> response) {
+                // Post an event so that listening activities can update their UI
+                if (response.body() != null && response.body().results != null) {
+                    EventBusManager.BUS.post(new SearchResultEvent(response.body().results));
+                } else {
+                    // Null result
+                    // We may want to display a warning to user (e.g. Toast)
+                    //TODO : warning
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UnsplashResult> call, Throwable t) {
+                // Request has failed or is not at expected format
+                // We may want to display a warning to user (e.g. Toast)
+                //TODO : error
+            }
+        });
     }
 
 

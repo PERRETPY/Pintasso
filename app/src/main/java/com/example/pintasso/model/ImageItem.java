@@ -1,7 +1,6 @@
 package com.example.pintasso.model;
 
 public class ImageItem {
-    String description;
-
-    ImageUrl urls;
+    public String description;
+    public ImageUrl urls;
 }

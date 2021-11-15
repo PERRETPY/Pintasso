@@ -1,5 +1,7 @@
 package com.example.pintasso;
 
+import android.util.Log;
+
 import com.example.pintasso.event.EventBusManager;
 import com.example.pintasso.event.SearchResultEvent;
 import com.example.pintasso.model.UnsplashResult;
@@ -11,6 +13,7 @@ import java.lang.reflect.Modifier;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
@@ -44,14 +47,22 @@ public class ImageSearchService {
     }
 
     public void searchImageFromQuery(final String search) {
+        Log.d("SEARCHSERVICE", "Hello from searchImageFromQuery : " + search);
         // Call to the REST service
         pImageSearchRESTService.searchForImages(search).enqueue(new Callback<UnsplashResult>() {
             @Override
-            public void onResponse(Call<UnsplashResult> call, retrofit2.Response<UnsplashResult> response) {
+            public void onResponse(Call<UnsplashResult> call, Response<UnsplashResult> response) {
                 // Post an event so that listening activities can update their UI
                 if (response.body() != null && response.body().results != null) {
+                    Log.d("SEARCHSERVICE", "body not null");
                     EventBusManager.BUS.post(new SearchResultEvent(response.body().results));
                 } else {
+                    Log.d("SEARCHSERVICE", "body null");
+                    Log.d("SEARCHSERVICE", "call : " + call.toString());
+                    Log.d("SEARCHSERVICE", "response : " + response.toString());
+                    Log.d("SEARCHSERVICE", "body results : " + response.body().results);
+
+
                     // Null result
                     // We may want to display a warning to user (e.g. Toast)
                     //TODO : warning
@@ -60,6 +71,7 @@ public class ImageSearchService {
 
             @Override
             public void onFailure(Call<UnsplashResult> call, Throwable t) {
+                Log.d("SEARCHSERVICE", "fail");
                 // Request has failed or is not at expected format
                 // We may want to display a warning to user (e.g. Toast)
                 //TODO : error

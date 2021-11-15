@@ -1,6 +1,7 @@
 package com.example.pintasso.ui;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Picasso.get().load(itemList.get(position).urls.thumb).into(holder.pImageView);
+        Log.d("ImageAdapter", "Hello from onBindViewHolder" +itemList.toString());
+        //Picasso.get().load(itemList.get(position).urls.thumb).into(holder.pImageView);
     }
 
     @Override

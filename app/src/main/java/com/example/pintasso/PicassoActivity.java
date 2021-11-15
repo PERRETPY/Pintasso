@@ -1,6 +1,7 @@
 package com.example.pintasso;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,6 +52,7 @@ public class PicassoActivity extends AppCompatActivity {
 
         // Refresh search
         ImageSearchService.INSTANCE.searchImageFromQuery("test");
+        Log.d("PICASSOACTIVITY", "Hello from here");
     }
 
     @Override
@@ -70,7 +72,7 @@ public class PicassoActivity extends AppCompatActivity {
             pImageAdapter.notifyDataSetChanged();
 
             // Step 2: hide loader
-            //TODO
+            //TODO hide loader
         });
 
     }

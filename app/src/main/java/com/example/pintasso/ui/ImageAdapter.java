@@ -48,7 +48,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d("ImageAdapter", "Hello from onBindViewHolder" +itemList.toString());
-        //Picasso.get().load(itemList.get(position).urls.thumb).into(holder.pImageView);
+        Picasso.get().load(itemList.get(position).urls.thumb).into(holder.pImageView);
     }
 
     @Override

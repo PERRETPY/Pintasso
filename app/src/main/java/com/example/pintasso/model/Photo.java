@@ -2,10 +2,9 @@ package com.example.pintasso.model;
 
 import com.google.gson.annotations.Expose;
 
-public class ImageItem {
-    @Expose
-    public String description;
+import java.util.List;
 
+public class Photo {
     @Expose
-    public ImageUrl urls;
+    public List<ImageItem> results;
 }

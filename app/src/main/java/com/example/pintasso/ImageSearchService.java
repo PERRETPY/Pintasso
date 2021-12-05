@@ -25,6 +25,7 @@ public class ImageSearchService {
 
     private ImageSearchRESTService pImageSearchRESTService;
 
+
     private ImageSearchService() {
         // Create GSON Converter that will be used to convert from JSON to Java
         Gson gsonConverter = new GsonBuilder()
@@ -51,18 +52,11 @@ public class ImageSearchService {
         // Call to the REST service
         pImageSearchRESTService.searchForImages(search).enqueue(new Callback<UnsplashResult>() {
             @Override
-            public void onResponse(Call<UnsplashResult> call, Response<UnsplashResult> response) {
+            public void onResponse(Call<UnsplashResult> call, retrofit2.Response<UnsplashResult> response) {
                 // Post an event so that listening activities can update their UI
-                if (response.body() != null && response.body().results != null) {
-                    Log.d("SEARCHSERVICE", "body not null");
-                    EventBusManager.BUS.post(new SearchResultEvent(response.body().results));
+                if (response.body() != null && response.body().photos.results != null) {
+                    EventBusManager.BUS.post(new SearchResultEvent(response.body().photos.results));
                 } else {
-                    Log.d("SEARCHSERVICE", "body null");
-                    Log.d("SEARCHSERVICE", "call : " + call.toString());
-                    Log.d("SEARCHSERVICE", "response : " + response.toString());
-                    Log.d("SEARCHSERVICE", "body results : " + response.body().results);
-
-
                     // Null result
                     // We may want to display a warning to user (e.g. Toast)
                     //TODO : warning

@@ -40,7 +40,7 @@ public class PicassoActivity extends AppCompatActivity {
         pImageAdapter = new ImageAdapter(this, new ArrayList<>());
         pRecyclerView.setAdapter(pImageAdapter);
         pRecyclerView.setLayoutManager(new GridLayoutManager(this, pNumberOfColumns));
-
+        ImageSearchService.INSTANCE.searchImageFromQuery("test");
     }
 
     @Override

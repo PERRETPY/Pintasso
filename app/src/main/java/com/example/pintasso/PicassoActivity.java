@@ -1,8 +1,13 @@
 package com.example.pintasso;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,11 +23,18 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class PicassoActivity extends AppCompatActivity {
 
     @BindView(R.id.recyclerView)
     RecyclerView pRecyclerView;
+
+    @BindView(R.id.searchButton)
+    Button pSearchButton;
+
+    @BindView(R.id.searchText)
+    EditText pSearchText;
 
     private ImageAdapter pImageAdapter;
 
@@ -40,7 +52,34 @@ public class PicassoActivity extends AppCompatActivity {
         pImageAdapter = new ImageAdapter(this, new ArrayList<>());
         pRecyclerView.setAdapter(pImageAdapter);
         pRecyclerView.setLayoutManager(new GridLayoutManager(this, pNumberOfColumns));
-        ImageSearchService.INSTANCE.searchImageFromQuery("test");
+
+        pSearchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.toString().trim().length()==0){
+                    pSearchButton.setEnabled(false);
+                } else {
+                    pSearchButton.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // While text is changing, hide list and show loader
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
+    }
+
+    @OnClick(R.id.searchButton)
+    public void onButtonSearchClick() {
+        String query = this.pSearchText.getText().toString();
+        Log.d("SEARCH QUERY : ", query);
+        ImageSearchService.INSTANCE.searchImageFromQuery(query);
     }
 
     @Override
@@ -51,8 +90,8 @@ public class PicassoActivity extends AppCompatActivity {
         EventBusManager.BUS.register(this);
 
         // Refresh search
-        ImageSearchService.INSTANCE.searchImageFromQuery("test");
-        Log.d("PICASSOACTIVITY", "Hello from here");
+        //ImageSearchService.INSTANCE.searchImageFromQuery("test");
+        //Log.d("PICASSOACTIVITY", "Hello from here");
     }
 
     @Override

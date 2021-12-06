@@ -56,9 +56,6 @@ public class ImageAdapterClassic extends RecyclerView.Adapter<ImageAdapterClassi
         // show The Image in a ImageView
         new DownloadImageTask(holder.pImageView)
                 .execute(itemList.get(position).urls.thumb);
-
-
-        //Picasso.get().load(itemList.get(position).urls.thumb).into(holder.pImageView);
     }
 
     @Override
